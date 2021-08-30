@@ -57,4 +57,41 @@ public class CustomerServiceImpl implements CustomerService{
         }
         return page;
     }
+
+    /**
+     * 根据主键获取客户信息用于回显
+     * @param id
+     * @return
+     */
+    @Override
+    public Customer getCustomerById(Long id) {
+        return customerMapper.selectByPrimaryKey(id);
+    }
+
+    /**
+     * 更新客户信息
+     * @param customer
+     * @return
+     */
+    @Override
+    public int updateCustomer(Customer customer) {
+
+        return customerMapper.updateByPrimaryKey(customer);
+    }
+
+    /**
+     * 删除客户信息
+     * @param id
+     * @return
+     */
+    @Override
+    public int customerDeleteById(Long id) {
+        /*
+          若是假删除
+          Customer customer = customerMapper.selectByPrimaryKey(id);
+          customer.setIsDelete(1);
+          customerMapper.updateByPrimaryKey(customer);
+         */
+        return customerMapper.deleteByPrimaryKey(id);
+    }
 }

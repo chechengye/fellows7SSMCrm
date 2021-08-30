@@ -351,7 +351,7 @@
 						<div class="form-group">
 							<label for="edit_linkMan" class="col-sm-2 control-label">联系人</label>
 							<div class="col-sm-10">
-								<input type="text" class="form-control" id="edit_linkMan" placeholder="联系人" name="cust_linkman">
+								<input type="text" class="form-control" id="edit_linkMan" placeholder="联系人" name="custLinkman">
 							</div>
 						</div>
 						<div class="form-group">
@@ -369,13 +369,13 @@
 						<div class="form-group">
 							<label for="edit_zipcode" class="col-sm-2 control-label">邮政编码</label>
 							<div class="col-sm-10">
-								<input type="text" class="form-control" id="edit_zipcode" placeholder="邮政编码" name="cust_zipcode">
+								<input type="text" class="form-control" id="edit_zipcode" placeholder="邮政编码" name="custZipcode">
 							</div>
 						</div>
 						<div class="form-group">
 							<label for="edit_address" class="col-sm-2 control-label">联系地址</label>
 							<div class="col-sm-10">
-								<input type="text" class="form-control" id="edit_address" placeholder="联系地址" name="cust_address">
+								<input type="text" class="form-control" id="edit_address" placeholder="联系地址" name="custAddress">
 							</div>
 						</div>
 					</form>
@@ -409,36 +409,40 @@
 		function editCustomer(id) {
 			$.ajax({
 				type:"get",
-				url:"${pageContext.request.contextPath}/customer/edit.action",
+				url:"${pageContext.request.contextPath}/customerEdit.do",
 				data:{"id":id},
 				success:function(data) {
-					$("#edit_custId").val(data.custId);
-					$("#edit_customerName").val(data.custName);
-					$("#edit_customerFrom").val(data.custSource)
-					$("#edit_custIndustry").val(data.custIndustry)
-					$("#edit_custLevel").val(data.custLevel)
-					$("#edit_linkMan").val(data.cust_linkman);
-					$("#edit_phone").val(data.custPhone);
-					$("#edit_mobile").val(data.custMobile);
-					$("#edit_zipcode").val(data.cust_zipcode);
-					$("#edit_address").val(data.cust_address);
+					$("#edit_custId").val(data.data.custId);
+					$("#edit_customerName").val(data.data.custName);
+					$("#edit_customerFrom").val(data.data.custSource)
+					$("#edit_custIndustry").val(data.data.custIndustry)
+					$("#edit_custLevel").val(data.data.custLevel)
+					$("#edit_linkMan").val(data.data.custLinkman);
+					$("#edit_phone").val(data.data.custPhone);
+					$("#edit_mobile").val(data.data.custMobile);
+					$("#edit_zipcode").val(data.data.custZipcode);
+					$("#edit_address").val(data.data.custAddress);
 					
 				}
 			});
 		}
+		//返回到前端的通知通常由 - （
+			//1、状态码 -- 服务端与前端沟通后的结果标识 例如：2200 成功  500 失败 400 参数异常等等
+			//2、信息 -- 提示
+		    //3、数据 通常是JSON格式）
 		function updateCustomer() {
-			$.post("${pageContext.request.contextPath}/customer/update.action",$("#edit_customer_form").serialize(),function(data){
-				alert("客户信息更新成功！");
+			$.post("${pageContext.request.contextPath}/customerUpdate.do",$("#edit_customer_form").serialize(),function(data){
+				alert(data.message);
 				window.location.reload();
-			});
+			},"json");
 		}
 		
 		function deleteCustomer(id) {
 			if(confirm('确实要删除该客户吗?')) {
-				$.post("${pageContext.request.contextPath}/customer/delete.action",{"id":id},function(data){
-					alert("客户删除更新成功！");
+				$.post("${pageContext.request.contextPath}/customerDelete.do",{"id":id},function(data){
+					alert(data.message);
 					window.location.reload();
-				});
+				},"json");
 			}
 		}
 	</script>
